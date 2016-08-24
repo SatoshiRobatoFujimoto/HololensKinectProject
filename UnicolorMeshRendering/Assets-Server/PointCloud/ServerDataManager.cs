@@ -284,6 +284,11 @@ public class ServerDataManager : MonoBehaviour
                 if (compareDepth(_DepthData[depthIndex], _SavedDepthData[depthIndex]))
                 {
                     _DepthData[depthIndex] = 65535;
+                    _ColorData[colorIndex + 0] = 0;
+                    _ColorData[colorIndex + 1] = 0;
+                    _ColorData[colorIndex + 2] = 0;
+                    _ColorData[colorIndex + 3] = 0;
+
                 }
                 if (detectHuman && (_BodyData[depthIndex] == 0xff))
                 {

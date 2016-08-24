@@ -177,6 +177,7 @@ public class DataReceiver : Singleton<DataReceiver> {
 
             case State.CreateMesh:
 
+                Debug.Log("Creating mesh");
                 CreateMesh();  // Create an empty mesh
                 currentState = State.WaitingForDepth1;
 
@@ -246,7 +247,7 @@ public class DataReceiver : Singleton<DataReceiver> {
                 RefreshMesh();
                 currentState = State.WaitingForDepth1;
 
-                Debug.Log("Refresh");
+                Debug.Log("Refreshing mesh");
                 
                 break;
 
@@ -256,13 +257,9 @@ public class DataReceiver : Singleton<DataReceiver> {
     }
 
 
-    private void CreateMesh()
+    void CreateMesh()
     {
 
-        //Debug.Log("Creating mesh");
-        
-        // create a fixed size mesh
-        // mesh vertex position/color will be updated every frame
         _Mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = _Mesh;
 
@@ -283,13 +280,15 @@ public class DataReceiver : Singleton<DataReceiver> {
             }
         }
 
+        //Debug.Log("Num of vertices: " + _Vertices.Length);
+
         _Mesh.vertices = _Vertices;
         _Mesh.colors = _Colors;
         _Mesh.SetIndices(_Index, MeshTopology.Points, 0);
 
     }
 
-    private void RefreshMesh()
+    void RefreshMesh()
     {
 
         for (int x = 0; x < _Width; x++)
@@ -299,11 +298,17 @@ public class DataReceiver : Singleton<DataReceiver> {
                 int i = (y * _Width) + x;
 
                 _Index[i] = i;
-                _Vertices[i].z = _DepthData[i];
-                _Colors[i] = new Color(UnityEngine.Random.Range(0.0f, 1.0f),
-                                   UnityEngine.Random.Range(0.0f, 1.0f),
-                                   UnityEngine.Random.Range(0.0f, 1.0f), 
-                                   1.0f);
+
+                if (_DepthData[i] >= 1000 || (_DepthData[i] <= 10))
+                {
+                    _Colors[i] = new Color(0, 0, 0, 0);
+                    _Vertices[i].z = 60000f;
+                }
+                else
+                {
+                    _Colors[i] = new Color(0.0f, 1.0f, 0.0f, 1.0f);
+                    _Vertices[i].z = _DepthData[i];
+                }
 
             }
         }
@@ -313,7 +318,6 @@ public class DataReceiver : Singleton<DataReceiver> {
         _Mesh.SetIndices(_Index, MeshTopology.Points, 0);
 
     }
-
 
 
 }

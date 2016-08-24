@@ -124,14 +124,15 @@ public class PointCloudRender : MonoBehaviour
                 int i = (y * width) + x;
 
                 _Index[i] = i;
-                _Vertices[i].z = _DepthData[i];
                 
                 if (_DepthData[i] >= 1000 || (_DepthData[i] <= 10) )
                 {
                     _Colors[i] = new Color(0, 0, 0, 0);
+                    _Vertices[i].z = 60000f;
                 } else
                 {
-                    _Colors[i] = new Color(0, 1, 0, 1);
+                    _Colors[i] = new Color(0.0f, 1.0f, 0.0f, 1.0f);
+                    _Vertices[i].z = _DepthData[i];
                 }
 
             }

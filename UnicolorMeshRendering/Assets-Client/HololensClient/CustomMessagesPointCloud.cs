@@ -175,6 +175,7 @@ public class CustomMessagesPointCloud : Singleton<CustomMessagesPointCloud>
             // Start first message
             // 1) Start with UserMessageIDStart
             NetworkOutMessage msg1 = CreateMessage((int)TestMessageID.StartID);
+
             // 2) Add message type ID
             msg1.Write((byte)MsgID.DEPTH1);
 
